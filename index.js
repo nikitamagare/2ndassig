@@ -45,7 +45,10 @@ app.get('/employees',(req,res) => {
 app.get('/employees/:id',(req,res) => {
 	mysqlConnection.query('SELECT * FROM Employee WHERE EmpId = ?',[req.params.id],(err,rows,fields) =>{
 		if(!err)
+		{
+			logger.log('info',"Employee data retrieved",rows);
 			res.send(rows);
+		}
 		else
 			console.log(err);
 	})
@@ -93,7 +96,7 @@ app.put('/employees',(req,res) => {
 	var sql ="UPDATE Employee SET Name='"+Name+"' WHERE EmpId="+req.body.EmpId;
 	mysqlConnection.query(sql,(err,rows,fields) =>{
 		if(!err)
-			res.send('updated succesfully');
+			return res.send('updated succesfully');
 		else
 			console.log(err);
 		res.send('Some error occured');
@@ -125,3 +128,6 @@ app.post('/file', upload.single('file'), (req, res) => {
 });
 
 app.listen(3000,() => console.log('express serveris running at port : 3000'));
+
+
+module.exports = app;
